@@ -43,7 +43,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "joinOk")
-	public String joinOk(HttpServletRequest request) {
+	public String joinOk(HttpServletRequest request, HttpSession session) {
 		String memberId = request.getParameter("mid");//"mid" 파라미터의 이름만 넣어준다
 		String memberPw = request.getParameter("mpw");
 		String memberName = request.getParameter("mname");
@@ -52,9 +52,12 @@ public class HomeController {
 		IDao dao = sqlSession.getMapper(IDao.class);//IDao.java에서 class 불러온다
 		
 		dao.joinMember(memberId, memberPw, memberName, memberEmail);//맵핑된 메소드가 insert 니까 반환타입이 없다.
-		
+		session.setAttribute("memberId", memberId);//가입과 동시에 로그인
 		return "redirect:index";
 	}
+	
+	
+	
 	
 	@RequestMapping(value = "loginOk")
 	public String loginOk(HttpServletRequest request, HttpSession session) {
@@ -64,9 +67,16 @@ public class HomeController {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		int checkIdFlag = dao.checkUserIdAndPw(memberId, memberPw);//1이면 로그인 되고 0이면 로그인 안된다.
 		
-		if(checkIdFlag == 1) {
+		if(checkIdFlag == 1) {//참이면 로그인 성공
 			session.setAttribute("memberId", memberId);//로그인 하겠다는 뜻
 		}
+		return "redirect:index";
+	}
+	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		
+		session.invalidate();//세션 삭제하기
 		return "redirect:index";
 	}
 }
