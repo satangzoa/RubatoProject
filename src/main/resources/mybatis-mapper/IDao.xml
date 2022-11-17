@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org/DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rubato.home.dao.IDao">
+
+	<insert id="joinMember">
+	insert into rubamember (mid, mpw, mname, memail) values (#{param1},#{param2},#{param3},#{param4})
+	</insert>
+
+ 	<select id="checkUserId" resultType="int">
+ 	select count(*) from rubamember where mid=#{param1}
+ 	</select>
+ 	
+ 	
+ 	<select id="checkUserIdAndPw" resultType="int">
+ 	select count(*) from rubamember where mid=#{param1} and mpw=#{param2}
+ 	</select>
+</mapper>
