@@ -69,28 +69,30 @@
         <img src="${pageContext.request.contextPath}/resources/img/comm.gif">
         <h2 id="board_title">자유게시판</h2>
         <div id="write_title"><h2>글쓰기</h2></div>
+        <form action="writeOk">
         <table>
           <tr id="name">
             <td class="col1">이름</td>
-            <td class="col2"><input type="text"></td>
+            <td class="col2"><input type="text" name="rfbname"></td>
           </tr>
           <tr id="subject">
             <td class="col1">제목</td>
-            <td class="col2"><input type="text"></td>
+            <td class="col2"><input type="text" name="rfbtitle"></td>
           </tr>
           <tr id="content">
             <td class="col1">내용</td>
-            <td class="col2"><textarea></textarea></td>
+            <td class="col2"><textarea name="rfbcontent"></textarea></td>
           </tr>
           <tr id="upload">
             <td class="col1">업로드 파일</td>
-            <td class="col2"><input type="file"></td>
+            <td class="col2"><input type="file" name="files"></td>
           </tr>
         </table>
         <div id="buttons">
-          <a href="board_list"><img src="${pageContext.request.contextPath}/resources/img/ok.png"></a>
+         <input type="image" src="${pageContext.request.contextPath}/resources/img/ok.png">
           <a href="board_list"><img src="${pageContext.request.contextPath}/resources/img/list.png"></a>
         </div>
+         </form>
       </section> <!-- section main 끝 -->
     </main>
     <div class="clear"></div>

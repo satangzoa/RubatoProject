@@ -79,6 +79,22 @@ public class HomeController {
 		session.invalidate();//세션 삭제하기
 		return "redirect:index";
 	}
+	
+	@RequestMapping("writeOk")
+	public String writeOk(HttpServletRequest request,HttpSession session) {
+		
+		IDao dao = sqlSession.getMapper(IDao.class);
+		String name = request.getParameter("rfbname");
+		String title = request.getParameter("rfbtitle");
+		String content = request.getParameter("rfbcontent");
+		String bid = request.getParameter("rfbid");
+		
+		dao.rfbwrite(name, title, content, bid);
+		session.setAttribute("bid", bid);
+		
+		return "redirect:index";
+	}
+	
 }
 
 
