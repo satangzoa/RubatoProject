@@ -20,8 +20,23 @@
  	
  	<insert id="rfbwrite">
 	insert into 
-		rubafreeboard (rfbnum, rfbname, rfbtitle, rfbcontent, rfbid, rfbhit, rfbreplycount) 
+		rubafreeboard (rfbnum, rfbname, rfbtitle, rfbcontent, rfbuserid, rfbhit, rfbreplycount) 
 	values 
 		(rfb_seq.nextval, #{param1},#{param2},#{param3},#{param4},0,0)
 	</insert>
+	
+	<select id="rfblist" resultType="com.rubato.home.dto.RFBoardDto"> <!-- 전부다 가져와야하니까 위치를 resultType에넣어준다 -->
+ 	select * from rubafreeboard order by rfbnum desc
+ 	</select>
+ 	
+ 	<select id="rfboardAllCount" resultType="int">
+ 	select count(*) from rubafreeboard 
+ 	</select>
+ 	
+ 	<select id="rfboardView" resultType="com.rubato.home.dto.RFBoardDto">
+ 	select * from rubafreeboard where rfbnum=#{param1}
+ 	</select>
+ 	
 </mapper>
+
+

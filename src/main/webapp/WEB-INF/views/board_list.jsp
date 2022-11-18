@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +14,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board_list_main.css">
 </head>
 <body>
+	<% 
+		String sessionId = (String) session.getAttribute("memberId");
+		//로그인중이라면 로그인한 아이디가 저장되고 비로그인 중이면 sessionId==null 임
+	%>
   <div id="wrap">
     <header> <!-- header 시작 -->
       <a href="index"><img id="logo" src="${pageContext.request.contextPath}/resources/img/logo.png"></a>
@@ -32,6 +37,8 @@
     <aside>
       <article id="login_box"> <!-- login box 시작 -->
         <img id="login_title" src="${pageContext.request.contextPath}/resources/img/ttl_login.png">
+        
+         <% if(sessionId == null) { %>
         <form action="loginOk">
         <div id="input_button">
           <ul id="login_input">
@@ -41,11 +48,18 @@
           <input type="image" id="login_btn" src="${pageContext.request.contextPath}/resources/img/btn_login.gif">
         </div>
         </form>
+        <% } else { %>
+        <br><%= sessionId %>님 로그인 중<br>        
+        <% } %>
         <div class="clear"></div>
+        <% if(sessionId == null) { %>
         <div id="join_search">
-          <img src="${pageContext.request.contextPath}/resources/img/btn_join.gif">
+          <a href="member_join"><img src="${pageContext.request.contextPath}/resources/img/btn_join.gif"></a>
           <img src="${pageContext.request.contextPath}/resources/img/btn_search.gif">
         </div>
+        <% } else {%>
+        <a href="logout">로그아웃</a>
+        <% } %>
       </article> <!-- login box 끝 -->
       <nav id="sub_menu"> <!-- 서브 메뉴 시작 -->
         <ul>
@@ -69,7 +83,7 @@
         <img src="${pageContext.request.contextPath}/resources/img/comm.gif">
         <h2 id="board_title">자유게시판</h2>
         <div id="total_search">
-          <div id="total">▷ 총 5개의 게시물이 있습니다.</div>
+          <div id="total">▷ 총 ${boardCount }개의 게시물이 있습니다.</div>
           <div id="search">
             <div id="select_img"><img src="${pageContext.request.contextPath}/resources/img/select_search.gif"></div>
             <div id="search_select">
@@ -91,33 +105,17 @@
             <th>일시</th>
             <th>조회수</th>
           </tr>
+          <c:forEach items="${ boardList}" var="boardDto">
           <tr>
-            <td class="col1">1</td>
+            <td class="col1">${boardDto.rfbnum }</td>
             <td class="col2">
-              <a href="board_view">까스통님의 선물인 보드카가 정말 독하네요!!!</a>
+              <a href="board_view?rfbnum=${boardDto.rfbnum }">${boardDto.rfbtitle }</a><!-- 클릭되는 rfbnum값을 넘겨준다 -->
             </td>
-            <td class="col3">루바토</td>
-            <td class="col4">2022-09-30</td>
-            <td class="col5">13</td>
+            <td class="col3">${boardDto.rfbname }</td>
+            <td class="col4">${boardDto.rfbdate }</td>
+            <td class="col5">${boardDto.rfbhit }</td>
           </tr>
-          <tr>
-            <td class="col1">2</td>
-            <td class="col2">
-              <a href="board_view">까스통님의 선물인 보드카가 정말 독하네요!!!</a>
-            </td>
-            <td class="col3">루바토</td>
-            <td class="col4">2022-09-30</td>
-            <td class="col5">13</td>
-          </tr>
-          <tr>
-            <td class="col1">3</td>
-            <td class="col2">
-              <a href="board_view">까스통님의 선물인 보드카가 정말 독하네요!!!</a>
-            </td>
-            <td class="col3">루바토</td>
-            <td class="col4">2022-09-30</td>
-            <td class="col5">13</td>
-          </tr>
+          </c:forEach>
         </table> <!-- 게시판 목록 테이블 끝 -->
         <div id="buttons">
           <div class="col1">◀ 이전 1 다음 ▶</div>

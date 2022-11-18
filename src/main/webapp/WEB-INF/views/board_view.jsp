@@ -13,6 +13,11 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/board_view_main.css">
 </head>
 <body>
+	<% 
+		String sessionId = (String) session.getAttribute("memberId");
+		//로그인중이라면 로그인한 아이디가 저장되고 비로그인 중이면 sessionId==null 임
+	%>
+	
   <div id="wrap">
     <header> <!-- header 시작 -->
       <a href="index"><img id="logo" src="${pageContext.request.contextPath}/resources/img/logo.png"></a>
@@ -31,6 +36,9 @@
     </header> <!-- header 끝 -->
     <aside>
       <article id="login_box"> <!-- login box 시작 -->
+        <img id="login_title" src="${pageContext.request.contextPath}/resources/img/ttl_login.png">
+        
+         <% if(sessionId == null) { %>
         <form action="loginOk">
         <div id="input_button">
           <ul id="login_input">
@@ -40,11 +48,18 @@
           <input type="image" id="login_btn" src="${pageContext.request.contextPath}/resources/img/btn_login.gif">
         </div>
         </form>
+        <% } else { %>
+        <br><%= sessionId %>님 로그인 중<br>        
+        <% } %>
         <div class="clear"></div>
+        <% if(sessionId == null) { %>
         <div id="join_search">
-          <img src="${pageContext.request.contextPath}/resources/img/btn_join.gif">
+          <a href="member_join"><img src="${pageContext.request.contextPath}/resources/img/btn_join.gif"></a>
           <img src="${pageContext.request.contextPath}/resources/img/btn_search.gif">
         </div>
+        <% } else {%>
+        <a href="logout">로그아웃</a>
+        <% } %>
       </article> <!-- login box 끝 -->
       <nav id="sub_menu"> <!-- 서브 메뉴 시작 -->
         <ul>
@@ -68,15 +83,11 @@
         <img src="${pageContext.request.contextPath}/resources/img/comm.gif">
         <h2 id="board_title">자유게시판</h2>
         <div id="view_title_box">
-          <span id="boardTitle">까스통의 선물인 보드카가 정말 독하네요!!!</span>
-          <span id="info">루바토 | 조회수 : 208 | 2022-10-05 (09:21)</span>
+          <span id="boardTitle">${rfbView.rfbtitle }</span><!-- homeController에서 47 board_view에서 rfbView -->
+          <span id="info">${rfbView.rfbname } | ${rfbView.rfbhit } | ${rfbView.rfbdate }</span>
         </div>
         <p id="view_content">
-          까스통님 고맙습니다. <br>
-          까스통님 고맙습니다. <br>
-          까스통님 고맙습니다. <br>
-          까스통님 고맙습니다. <br>
-          까스통님 고맙습니다. <br>
+          ${rfbView.rfbcontent }
         </p>
         <div id="comment_box">
           <img id="title_comment" src="${pageContext.request.contextPath}/resources/img/title_comment.gif">

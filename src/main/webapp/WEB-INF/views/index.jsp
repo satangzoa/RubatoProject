@@ -13,8 +13,8 @@
 <body>
 	<% 
 		String sessionId = (String) session.getAttribute("memberId");
-		//로그인중이라면 로그인한 아이디가 저장되고 비로그인 중이면 sessionId == null 임
-			%>
+		//로그인중이라면 로그인한 아이디가 저장되고 비로그인 중이면 sessionId==null 임
+	%>
 
 
 
@@ -25,21 +25,19 @@
         HOME | 
         
         <% if(sessionId == null) { %>
-        LOGIN 
+        LOGIN
         <% } else { %>
-        <a href="logout"> LOGOUT</a>
-        
+        <a href="logout">LOGOUT</a>
         <% } %>
         
-        | 
-        <% if(sessionId == null) { %>
-        <a href="member_join">JOIN</a>
-        
-        <% } else { %>
-        MODIFY
-        <% } %>
-        | NOTICE
-        
+         | 
+         
+         <% if(sessionId == null) { %>
+         <a href="member_join">JOIN</a> 
+         <% } else { %>
+         LEVEL 7
+         <% } %>
+         | NOTICE
       </nav>
       <nav id="main_menu">
         <ul>
@@ -71,7 +69,7 @@
         <div class="clear"></div>
         <% if(sessionId == null) { %>
         <div id="join_search">
-          <img src="${pageContext.request.contextPath}/resources/img/btn_join.gif">
+          <a href="member_join"><img src="${pageContext.request.contextPath}/resources/img/btn_join.gif"></a>
           <img src="${pageContext.request.contextPath}/resources/img/btn_search.gif">
         </div>
         <% } else {%>

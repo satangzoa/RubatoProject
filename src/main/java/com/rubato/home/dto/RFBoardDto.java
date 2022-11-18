@@ -12,7 +12,7 @@ public class RFBoardDto {
 	private int rfbnum;
 	private String rfbname;
 	private String rfbtitle;
-	private String rfcontent;
+	private String rfbcontent;
 	private int rfbhit;
 	private String rfbuserid;
 	private int rfbreplyconunt;

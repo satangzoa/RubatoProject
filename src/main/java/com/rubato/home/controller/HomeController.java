@@ -1,6 +1,11 @@
 package com.rubato.home.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -10,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rubato.home.dao.IDao;
+import com.rubato.home.dto.RFBoardDto;
 
 @Controller
 public class HomeController {
@@ -23,17 +29,49 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "board_list")
-	public String board_list() {
+	public String board_list(Model model) {
+		
+		IDao dao = sqlSession.getMapper(IDao.class);
+		
+		ArrayList<RFBoardDto> boardDtos = dao.rfblist();
+		
+		int boardCount = dao.rfboardAllCount();
+		model.addAttribute("boardList",boardDtos);
+		model.addAttribute("boardCount",boardCount);
+		
+		
+		
 		return "board_list";
 	}
 	
 	@RequestMapping(value = "board_view")
-	public String board_view() {
+	public String board_view(HttpServletRequest request,Model model) {
+		
+		String rfbnum = request.getParameter("rfbnum");
+		IDao dao = sqlSession.getMapper(IDao.class);
+		
+		RFBoardDto rfboardDto = dao.rfboardView(rfbnum);
+		
+		model.addAttribute("rfbView",rfboardDto);
+		
+		
 		return "board_view";
 	}
 	
 	@RequestMapping(value = "board_write")
-	public String board_write() {
+	public String board_write(HttpSession session, HttpServletResponse response) {
+		String sessionId = (String) session.getAttribute("memberId");
+		if(sessionId == null) {//침이면 로그인이 안된 상태
+			PrintWriter out;
+		try {
+			response.setContentType("text/html;charset=utf-8");
+			out = response.getWriter();
+			out.println("<script>alert('로그인하지 않으면 글을 쓰실 수 없습니다!');history.go(-1);</script>");
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 		return "board_write";
 	}
 
@@ -83,16 +121,17 @@ public class HomeController {
 	@RequestMapping("writeOk")
 	public String writeOk(HttpServletRequest request,HttpSession session) {
 		
-		IDao dao = sqlSession.getMapper(IDao.class);
+		
 		String name = request.getParameter("rfbname");
 		String title = request.getParameter("rfbtitle");
 		String content = request.getParameter("rfbcontent");
-		String bid = request.getParameter("rfbid");
 		
-		dao.rfbwrite(name, title, content, bid);
-		session.setAttribute("bid", bid);
+		String sessionId = (String) session.getAttribute("memberId");
+		//글쓴이의 아이디는 현재 로그인된 유저의 아이디이므로 세션에서 가져와서 전달
+		IDao dao = sqlSession.getMapper(IDao.class);
+		dao.rfbwrite(name, title, content, sessionId);
 		
-		return "redirect:index";
+		return "redirect:board_list";
 	}
 	
 }
