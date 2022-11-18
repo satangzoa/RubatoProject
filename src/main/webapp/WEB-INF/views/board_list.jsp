@@ -105,14 +105,14 @@
             <th>일시</th>
             <th>조회수</th>
           </tr>
-          <c:forEach items="${ boardList}" var="boardDto">
+          <c:forEach items="${boardList}" var="boardDto">
           <tr>
             <td class="col1">${boardDto.rfbnum }</td>
             <td class="col2">
-              <a href="board_view?rfbnum=${boardDto.rfbnum }">${boardDto.rfbtitle }</a><!-- 클릭되는 rfbnum값을 넘겨준다 -->
-            	<c:if test="${boardDto.rfbreplyconunt != 0}">
-            	&nbsp;&nbsp;[${boardDto.rfbreplyconunt }]
-            </c:if>
+              <a href="board_view?rfbnum=${boardDto.rfbnum }">${boardDto.rfbtitle }</a>
+              <c:if test="${boardDto.rfbreplycount != 0 }">              
+              &nbsp;&nbsp;[${boardDto.rfbreplycount }]
+              </c:if>
             </td>
             <td class="col3">${boardDto.rfbname }</td>
             <td class="col4">${boardDto.rfbdate }</td>

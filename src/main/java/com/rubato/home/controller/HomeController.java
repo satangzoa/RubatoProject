@@ -157,7 +157,7 @@ public class HomeController {
 	
 		String sessionId = (String) session.getAttribute("memberId");//현재 로그인한 유저의 아이디
 		
-		if(sessionId == null) {//침이면 로그인이 안된 상태
+		if(sessionId == null) {//참이면 로그인이 안된 상태
 			PrintWriter out;
 		try {
 			response.setContentType("text/html;charset=utf-8");
@@ -180,8 +180,29 @@ public class HomeController {
 		
 		}
 		
-			return "redirect:board_view";//해당글 아래 댓글이 보여야해서 board_view를 요청해야한다
+			return "board_view";//해당글 아래 댓글이 보여야해서 board_view를 요청해야한다
 	}
+	
+	@RequestMapping(value = "replyDelete")
+	public String replyDelete(HttpServletRequest request, Model model) {
+		
+		String rrnum = request.getParameter("rrnum");//댓글 고유번호
+		String rrorinum = request.getParameter("rfbnum");//댓글이 달린 원글의 고유번호
+		
+		IDao dao = sqlSession.getMapper(IDao.class);
+		
+		dao.rrdelete(rrnum);//댓글 삭제
+		dao.rrcountMinus(rrorinum);//해당 글의 댓글 갯수 1감소
+		
+		RFBoardDto rfboardDto = dao.rfboardView(rrorinum);
+		ArrayList<RReplyDto> replyDtos =  dao.rrlist(rrorinum);
+		
+		model.addAttribute("rfbView", rfboardDto);//원글의 게시글 내용 전부
+		model.addAttribute("replylist", replyDtos);//해당 글에 달린 댓글 리스트
+		
+		return "board_view";
+	}
+	
 }
 
 
