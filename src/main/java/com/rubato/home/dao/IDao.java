@@ -27,5 +27,8 @@ public interface IDao {
 	public void rrdelete(String rrnum);//댓글 삭제
 	public void rrcountMinus(String rrorinum);// 댓글 삭제시 해달글의 댓글갯수 1감소
 	
-	
+	//게시판 검색관련
+	public ArrayList<RFBoardDto> rfbSearchTitleList(String searchKey);//select
+	public ArrayList<RFBoardDto> rfbSearchContentList(String searchKey);//select
+	public ArrayList<RFBoardDto> rfbSearchWriterList(String searchKey);//select
 }

@@ -70,6 +70,10 @@
  	update rubafreeboard set rfbreplycount = rfbreplycount-1 where rfbnum=#{param1}
  	</update>
  	
+ 	<!-- 게시판 검색 -->
+ 	<select id="rfbSearchTitleList" resultType="com.rubato.home.dto.RFBoardDto">
+ 		select * from rubafreeboard where rfbtitle= LIKE '%' || #{param1} || '%' order by rfbnum desc
+ 	</select>
 </mapper>
 
 

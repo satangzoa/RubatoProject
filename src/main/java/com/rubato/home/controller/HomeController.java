@@ -203,7 +203,16 @@ public class HomeController {
 		return "board_view";
 	}
 	
+	@RequestMapping("search_list")
+	public String search_list() {
+		
+		
+		return "board_list";
+	}
+	
 }
+
+
 
 
 
