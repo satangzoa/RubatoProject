@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rubato.home.dao.IDao;
 import com.rubato.home.dto.RFBoardDto;
+import com.rubato.home.dto.RReplyDto;
 
 @Controller
 public class HomeController {
@@ -53,9 +54,10 @@ public class HomeController {
 		
 		dao.rfbhit(rfbnum); // 조회수 증가
 		RFBoardDto rfboardDto = dao.rfboardView(rfbnum);
+		ArrayList<RReplyDto> replyDtos = dao.rrlist(rfbnum);
 		
 		model.addAttribute("rfbView",rfboardDto);
-		
+		model.addAttribute("replylist",replyDtos);
 		
 		return "board_view";
 	}
@@ -167,11 +169,14 @@ public class HomeController {
 		}
 		}else {
 			IDao dao = sqlSession.getMapper(IDao.class);
-			dao.rrwrite(rrorinum, rrconetent, sessionId);//댓글쓰기
+			dao.rrwrite(rrorinum,sessionId, rrconetent );//댓글쓰기
+			dao.rrcount(rrorinum);//해당글의 댓글 총 개수 증가
 			
-			RFBoardDto rfoardDto = dao.rfboardView(rrorinum);
-			model.addAttribute("rfbView",rfoardDto);
+			RFBoardDto rfboardDto = dao.rfboardView(rrorinum);
+			ArrayList<RReplyDto> replyDtos = dao.rrlist(rrorinum);
 			
+			model.addAttribute("rfbView", rfboardDto); //원글의 게시글 내용 전부
+			model.addAttribute("replylist", replyDtos); //해당 글에 달린 댓글 리스트
 		
 		}
 		

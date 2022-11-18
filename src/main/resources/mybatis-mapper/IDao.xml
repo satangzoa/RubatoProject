@@ -50,14 +50,19 @@
  	<!-- 댓글 -->
  	
  	<insert id="rrwrite">
-	insert into rubareply (rrnum, rrorinum, rrid, rrcontent) 
-	values (rr_seq.nextval, #{param1}, #{param2}, #{param3})
+		insert into rubareply(rrnum, rrorinum, rrid, rrcontent) 
+		values (rr_seq.nextval, #{param1}, #{param2}, #{param3})
 	</insert>
  	
  	<select id="rrlist" resultType="com.rubato.home.dto.RReplyDto">
- 	select * from rubareply where rrorinum=#{param1}
- 	</select>
+		select * FROM rubareply where rrorinum=#{param1}
+	</select>
+	
+	<update id="rrcount">
+ 	update rubafreeboard set rfbreplycount = rfbreplycount+1 where rfbnum=#{param1}
+ 	</update>
  	
+	
 </mapper>
 
 
