@@ -48,8 +48,10 @@ public class HomeController {
 	public String board_view(HttpServletRequest request,Model model) {
 		
 		String rfbnum = request.getParameter("rfbnum");
+		//사용자가 글리스트에서 클릭한 글의 번호
 		IDao dao = sqlSession.getMapper(IDao.class);
 		
+		dao.rfbhit(rfbnum); // 조회수 증가
 		RFBoardDto rfboardDto = dao.rfboardView(rfbnum);
 		
 		model.addAttribute("rfbView",rfboardDto);
@@ -130,6 +132,17 @@ public class HomeController {
 		//글쓴이의 아이디는 현재 로그인된 유저의 아이디이므로 세션에서 가져와서 전달
 		IDao dao = sqlSession.getMapper(IDao.class);
 		dao.rfbwrite(name, title, content, sessionId);
+		
+		return "redirect:board_list";
+	}
+	
+	@RequestMapping(value = "delete")
+	public String delete(HttpServletRequest request) {
+		
+		String rfbnum = request.getParameter("rfbnum");
+		IDao dao = sqlSession.getMapper(IDao.class);
+		dao.delete(rfbnum);
+		
 		
 		return "redirect:board_list";
 	}

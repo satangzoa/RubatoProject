@@ -16,5 +16,6 @@ public interface IDao {
 	public ArrayList<RFBoardDto> rfblist(); // 게시판 리스트 select 다가져와야해서 매개변수는 필요없음
 	public int rfboardAllCount();// 모든 게시물의 갯수 가져온다.매개 변수는 필요없음. 총게시물 갯수. select
 	public RFBoardDto rfboardView(String rfbnum); //select 클릭한 글의 게시물 내용 보기
-	
+	public void delete(String rfbnum);//글삭제 delete
+	public void rfbhit(String rfbnum);//조회수 update
 }

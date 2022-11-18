@@ -37,6 +37,18 @@
  	select * from rubafreeboard where rfbnum=#{param1}
  	</select>
  	
+ 	<delete id="delete">
+ 	delete from rubafreeboard where rfbnum=#{param1}
+ 	</delete>
+ 	
+ 	<update id="rfbhit">
+ 	update rubafreeboard set rfbhit = rfbhit+1 where rfbnum=#{param1}
+ 	</update>
 </mapper>
+
+
+
+
+
 
 
