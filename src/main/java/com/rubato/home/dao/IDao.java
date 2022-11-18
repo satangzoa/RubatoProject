@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.rubato.home.dto.RFBoardDto;
 import com.rubato.home.dto.RMemberDto;
+import com.rubato.home.dto.RReplyDto;
 
 public interface IDao {
 	//멤버관련
@@ -18,4 +19,9 @@ public interface IDao {
 	public RFBoardDto rfboardView(String rfbnum); //select 클릭한 글의 게시물 내용 보기
 	public void delete(String rfbnum);//글삭제 delete
 	public void rfbhit(String rfbnum);//조회수 update
+	
+	//게시판 댓글
+	public void rrwrite(String rrorinum, String rrid, String rrcontent);//insert 새 댓글 입력
+	public ArrayList<RReplyDto> rrlist(String rrorinum);//해당 글의 댓글 리스트 select 댓글이 여러개니까 arraylist
+	
 }

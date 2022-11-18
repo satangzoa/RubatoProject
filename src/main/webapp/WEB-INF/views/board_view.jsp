@@ -86,14 +86,17 @@
           <span id="boardTitle">${rfbView.rfbtitle }</span><!-- homeController에서 47 board_view에서 rfbView -->
           <span id="info">${rfbView.rfbname } | ${rfbView.rfbhit } | ${rfbView.rfbdate }</span>
         </div>
+        <form action="replyOk">
+        <input type="hidden" name="rfbnum" value="${rfbView.rfbname }">
         <p id="view_content">
           ${rfbView.rfbcontent }
         </p>
         <div id="comment_box">
           <img id="title_comment" src="${pageContext.request.contextPath}/resources/img/title_comment.gif">
-          <textarea></textarea>
-          <img id="ok_ripple" src="${pageContext.request.contextPath}/resources/img/ok_ripple.gif">
+          <textarea name="rrcontent"></textarea>
+          <input type="image" id="ok_ripple" src="${pageContext.request.contextPath}/resources/img/ok_ripple.gif">
         </div>
+        </form>
         <div id="buttons">
           <a href="delete?rfbnum=${rfbView.rfbnum }"><img src="${pageContext.request.contextPath}/resources/img/delete.png"></a>
           <a href="board_list"><img src="${pageContext.request.contextPath}/resources/img/list.png"></a>

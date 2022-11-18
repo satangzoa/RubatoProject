@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class RReplyDto {
 	
 	private int rrnum;
-	private String rrcount;
+	private String rrcontent;
 	private String rrid;
 	private int rrorinum; // 댓글이 달린 원글의 게시판번호
 	private String rrdate;

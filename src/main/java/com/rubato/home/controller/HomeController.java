@@ -147,6 +147,36 @@ public class HomeController {
 		return "redirect:board_list";
 	}
 	
+	@RequestMapping(value = "replyOk")
+	public String replyOk(HttpServletRequest request, HttpSession session, Model model, HttpServletResponse response) {
+		
+		String rrorinum = request.getParameter("rfbnum");//댓글이 달린 원글 번호
+		String rrconetent = request.getParameter("rrcontent");//댓글 내용
+	
+		String sessionId = (String) session.getAttribute("memberId");//현재 로그인한 유저의 아이디
+		
+		if(sessionId == null) {//침이면 로그인이 안된 상태
+			PrintWriter out;
+		try {
+			response.setContentType("text/html;charset=utf-8");
+			out = response.getWriter();
+			out.println("<script>alert('로그인하지 않으면 글을 쓰실 수 없습니다!');history.go(-1);</script>");
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		}else {
+			IDao dao = sqlSession.getMapper(IDao.class);
+			dao.rrwrite(rrorinum, rrconetent, sessionId);//댓글쓰기
+			
+			RFBoardDto rfoardDto = dao.rfboardView(rrorinum);
+			model.addAttribute("rfbView",rfoardDto);
+			
+		
+		}
+		
+			return "redirect:board_view";//해당글 아래 댓글이 보여야해서 board_view를 요청해야한다
+	}
 }
 
 
