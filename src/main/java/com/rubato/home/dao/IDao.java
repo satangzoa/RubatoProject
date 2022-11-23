@@ -14,7 +14,7 @@ public interface IDao {
 	public int checkUserIdAndPw(String mid, String mpw);
 	
 	//게시판 관련
-	public void rfbwrite(String rfbname, String rfbtitle, String rfbcontent, String rfbid);
+	public void rfbwrite(String rfbname, String rfbtitle, String rfbcontent, String rfbid, int filecount);//insert
 	public ArrayList<RFBoardDto> rfblist(); // 게시판 리스트 select 다가져와야해서 매개변수는 필요없음
 	public int rfboardAllCount();// 모든 게시물의 갯수 가져온다.매개 변수는 필요없음. 총게시물 갯수. select
 	public RFBoardDto rfboardView(String rfbnum); //select 클릭한 글의 게시물 내용 보기
@@ -38,5 +38,6 @@ public interface IDao {
 	public ArrayList<RFBoardDto> boardLatestInfo(String rfbuserid);
 	//현재 파일이 첨부되 글을 쓴 아이디로 검색된 글 목록
 	public FileDto getFileInfo(String rfbnum);//select 파일이 첨부된 게시글의 번호로 조회한 첨부된 파일의 모든 정보 dto
+
 	
 }

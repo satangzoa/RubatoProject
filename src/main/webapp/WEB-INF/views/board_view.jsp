@@ -95,9 +95,13 @@
         
         <p id="file_info">
         	# 첨부파일 : 
-        	<a href="">
+        	<a href="${pageContext.request.contextPath}/resources/uploadfiles/${fileDto.filename}" download>
         	${fileDto.fileoriname}
         	</a>
+        	<c:if test="${fileDto.fileextension =='jpg' or fileDto.fileextension =='png' or fileDto.fileextension =='bmp'or fileDto.fileextension =='gif'}">
+        	<img width="300" src="${pageContext.request.contextPath}/resources/uploadfiles/${fileDto.filename}">
+        	<br>
+        	</c:if>
         </p><br>
         
         <!-- 해당글의 댓글 리스트 출력 -->

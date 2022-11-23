@@ -22,9 +22,9 @@
  	<!-- 자유게시판 -->
  	<insert id="rfbwrite">
 	insert into 
-		rubafreeboard (rfbnum, rfbname, rfbtitle, rfbcontent, rfbuserid, rfbhit, rfbreplycount) 
+		rubafreeboard (rfbnum, rfbname, rfbtitle, rfbcontent, rfbuserid, rfbhit, rfbreplycount, filecount) 
 	values 
-		(rfb_seq.nextval, #{param1},#{param2},#{param3},#{param4},0,0)
+		(rfb_seq.nextval, #{param1},#{param2},#{param3},#{param4},0,0,#{param5})
 	</insert>
 	
 	<select id="rfblist" resultType="com.rubato.home.dto.RFBoardDto"> <!-- 전부다 가져와야하니까 위치를 resultType에넣어준다 -->

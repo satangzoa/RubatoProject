@@ -76,6 +76,7 @@ public class HomeController {
 		ArrayList<RFBoardDto> boardDtos = dao.rfblist();
 		
 		int boardCount = dao.rfboardAllCount();
+		
 		model.addAttribute("boardList",boardDtos);
 		model.addAttribute("boardCount",boardCount);
 		
@@ -178,9 +179,9 @@ public class HomeController {
 		IDao dao = sqlSession.getMapper(IDao.class);
 		
 		if(files.isEmpty()) { //파일의 첨부여부 확인
-			dao.rfbwrite(boardName, boardTitle, boardContent, sessionId);
+			dao.rfbwrite(boardName, boardTitle, boardContent, sessionId,0);//첨부 안되있는 경우
 		} else {
-			dao.rfbwrite(boardName, boardTitle, boardContent, sessionId);
+			dao.rfbwrite(boardName, boardTitle, boardContent, sessionId,1);//파일 첨부된경우
 			ArrayList<RFBoardDto> latesBoard = dao.boardLatestInfo(sessionId);
 			RFBoardDto dto = latesBoard.get(0);//가장 최근글
 			int rfbnum = dto.getRfbnum();
@@ -307,8 +308,32 @@ public class HomeController {
 		return "board_list";
 	}
 	
-
-
+	@RequestMapping(value = "file_down")
+	public String file_down(HttpServletRequest request, Model model, HttpServletResponse response) {
+		
+		String rfbnum = request.getParameter("rfbnum");//파일이 첨부된 원글 번호
+		
+		IDao dao = sqlSession.getMapper(IDao.class);
+		
+		FileDto fileDto = dao.getFileInfo(rfbnum);
+		
+//		model.addAttribute("filename", fileDto.getFilename());//파일의 바뀐 이름찾는다
+		
+		String filename = fileDto.getFilename();
+		
+		PrintWriter out;
+		try {
+			response.setContentType("text/html;charset=utf-8");
+			out = response.getWriter();
+			out.println("<script>window.location.href='/resources/uploadfiles/" + filename + "'</script>");
+			out.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "filedown";
+	}
 }
 
 

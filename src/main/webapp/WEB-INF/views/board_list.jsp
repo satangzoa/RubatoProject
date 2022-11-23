@@ -108,7 +108,8 @@
             <th>일시</th>
             <th>조회수</th>
           </tr>
-          <c:forEach items="${boardList}" var="boardDto">
+        
+               <c:forEach items="${boardList}" var="boardDto">
           <tr>
             <td class="col1">${boardDto.rfbnum }</td>
             <td class="col2">
@@ -116,6 +117,12 @@
               <c:if test="${boardDto.rfbreplycount != 0 }">              
               &nbsp;&nbsp;[${boardDto.rfbreplycount }]
               </c:if>
+              <c:if test="${boardDto.filecount != 0 }">
+              <a href="file_down?rfbnum=${boardDto.rfbnum }"> <!-- 클릭한 원글의 번호-->
+              &nbsp;<img width="25" src="${pageContext.request.contextPath}/resources/img/file.png">
+              </a>
+              </c:if>             
+               
             </td>
             <td class="col3">${boardDto.rfbname }</td>
             <td class="col4">${boardDto.rfbdate }</td>
