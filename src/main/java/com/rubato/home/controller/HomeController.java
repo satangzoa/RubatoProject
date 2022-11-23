@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rubato.home.dao.IDao;
+import com.rubato.home.dto.FileDto;
 import com.rubato.home.dto.RFBoardDto;
 import com.rubato.home.dto.RReplyDto;
 
@@ -43,11 +44,9 @@ public class HomeController {
 		
 		int boardSize = boardDtos.size();//전체 글의 개수
 		
-		if(boardSize>=4) {
+		if(boardSize > 4) {
 			boardDtos = boardDtos.subList(0, 4);
-		}else {
-			boardDtos = boardDtos.subList(0, boardSize+1);
-		 }// 전체 글의 갯수가 4개보다 작을 때 발생하는 인덱스 에러를 방지
+		}// 전체 글의 갯수가 4개보다 작을 때 발생하는 인덱스 에러를 방지
 		
 		boardDtos = boardDtos.subList(0, 4);
 		
@@ -67,6 +66,7 @@ public class HomeController {
 		
 		return "index";
 	}
+	
 	
 	@RequestMapping(value = "board_list")
 	public String board_list(Model model) {
@@ -91,15 +91,19 @@ public class HomeController {
 		//사용자가 글리스트에서 클릭한 글의 번호
 		IDao dao = sqlSession.getMapper(IDao.class);
 		
+		FileDto fileDto = dao.getFileInfo(rfbnum);
+		
 		dao.rfbhit(rfbnum); // 조회수 증가
 		RFBoardDto rfboardDto = dao.rfboardView(rfbnum);
 		ArrayList<RReplyDto> replyDtos = dao.rrlist(rfbnum);
 		
 		model.addAttribute("rfbView",rfboardDto);
-		model.addAttribute("replylist",replyDtos);
+		model.addAttribute("replylist",replyDtos);//해당 글에 달린 댓글 리스트
+		model.addAttribute("fileDto",fileDto);//해당글ㅇ
 		
 		return "board_view";
 	}
+	
 	
 	@RequestMapping(value = "board_write")
 	public String board_write(HttpSession session, HttpServletResponse response) {
@@ -177,6 +181,10 @@ public class HomeController {
 			dao.rfbwrite(boardName, boardTitle, boardContent, sessionId);
 		} else {
 			dao.rfbwrite(boardName, boardTitle, boardContent, sessionId);
+			ArrayList<RFBoardDto> latesBoard = dao.boardLatestInfo(sessionId);
+			RFBoardDto dto = latesBoard.get(0);//가장 최근글
+			int rfbnum = dto.getRfbnum();
+			
 			
 			//파일 첨부
 			String fileoriname = files.getOriginalFilename(); // 첨부된 파일의 원래 이름
@@ -187,12 +195,18 @@ public class HomeController {
 			String fileuri = "C:/springboot-workspace/rubatoProjectDa-1117/src/main/resources/static/uploadfiles/";
 			//첨부된 파일이 저장될 서버의 실제 폴더 경로
 			
+			do {
+			
 		   destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileextension;// 알파벳과 숫자를 섞어서 랜덤숫자를 만들어준다.fileextension는 원래 확장자
 		   //알파벳 대소문자와 숫자를 포함한 랜덤 32자 문자열 생성 후 .을 구분자로 원본 파일의 확장자를 연결-> 실제 서버에 저장될 파일의 이름
 			destinationFile  = new File(fileuri+destinationFileName);
+			} while (destinationFile.exists());
+			//혹시 같은 이름의 파일이름이 존재하는지 확인
 			
 			destinationFile.getParentFile().mkdir();//파일의 디렉토리 지정
-			files.transferTo(destinationFile);//예외처리한다. 젤 처음 클릭
+			files.transferTo(destinationFile);//예외처리한다. 젤 처음 클릭 //업로된 파일이 지정한 폴더로 이동 완료!
+			
+			dao.fileInfoInsert(rfbnum,fileoriname,destinationFileName,fileextension,fileuri);
 			
 			
 		}

@@ -82,6 +82,20 @@
  	<select id="rfbSearchWriterList" resultType="com.rubato.home.dto.RFBoardDto"><!-- 글쓴이 -->
  		select * from rubafreeboard where rfbname LIKE '%' || #{param1} || '%' order by rfbnum desc
  	</select>
+ 	
+ 	<!--파일 업로드  -->
+ 	<insert id="fileInfoInsert">
+		insert into rubafiles(filenum, boardnum, fileoriname, filename, fileextension, fileurl) 
+		values (file_seq.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5})
+	</insert>
+	
+	<select id="boardLatestInfo" resultType="com.rubato.home.dto.RFBoardDto" >
+		select * from rubafreeboard where rfbuserid=#{param1} order by rfbnum desc
+	</select>
+	
+	<select id="getFileInfo" resultType="com.rubato.home.dto.FileDto" >
+		select * from rubafiles where boardnum=#{param1} 
+	</select>
 </mapper>
 
 
