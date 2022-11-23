@@ -95,7 +95,7 @@
               </select>
             </div>
             <div id="search_input"><input type="text" name="searchKey"></div>
-            <div id="search_btn"><input type"image" src="${pageContext.request.contextPath}/resources/img/search_button.gif"></div>
+            <div id="search_btn"><input type="image" src="${pageContext.request.contextPath}/resources/img/search_button.gif"></div>
           </div>
           </form>
         </div> <!-- total search 끝 -->

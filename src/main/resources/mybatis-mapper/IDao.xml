@@ -72,7 +72,15 @@
  	
  	<!-- 게시판 검색 -->
  	<select id="rfbSearchTitleList" resultType="com.rubato.home.dto.RFBoardDto">
- 		select * from rubafreeboard where rfbtitle= LIKE '%' || #{param1} || '%' order by rfbnum desc
+ 		select * from rubafreeboard where rfbtitle LIKE '%' || #{param1} || '%' order by rfbnum desc
+ 	</select>
+ 	
+ 	<select id="rfbSearchContentList" resultType="com.rubato.home.dto.RFBoardDto">
+ 		select * from rubafreeboard where rfbcontent LIKE '%' || #{param1} || '%' order by rfbnum desc
+ 	</select>
+ 	
+ 	<select id="rfbSearchWriterList" resultType="com.rubato.home.dto.RFBoardDto"><!-- 글쓴이 -->
+ 		select * from rubafreeboard where rfbname LIKE '%' || #{param1} || '%' order by rfbnum desc
  	</select>
 </mapper>
 
